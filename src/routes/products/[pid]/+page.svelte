@@ -107,7 +107,7 @@
           </Cell>
           <Cell>{item.deliver_method} / {item.deliver_order} / {item.deliver_time}</Cell>
           <Cell>
-            <Button on:click={() => {customizeDialog.open(item.id)}}>定制</Button>
+            <Button on:click={() => {customizeDialog.open(item.product_id, item.serial_no)}}>定制</Button>
             <Button on:click={() => {handleDelete(item.product_id, item.serial_no)}}>删除</Button>
           </Cell>
         </Row>

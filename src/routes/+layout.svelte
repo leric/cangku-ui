@@ -115,6 +115,9 @@
           </Button>
           <Menu bind:open={userMenuOpen} anchorCorner="BOTTOM_LEFT">
             <List>
+              <Item on:SMUI:action={() => goto('/account')}>
+                <Text>账户设置</Text>
+              </Item>
               <Item on:SMUI:action={handleLogout}>
                 <Text>退出登录</Text>
               </Item>

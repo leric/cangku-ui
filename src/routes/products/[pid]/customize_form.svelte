@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { page } from '$app/stores';
   import Dialog, { Title, Content } from '@smui/dialog';
   import Button, { Label } from '@smui/button';
   import Textfield, { HelperLine } from '@smui/textfield';
@@ -14,17 +13,18 @@
   
   const dispatch = createEventDispatcher();
   let client = new APIClient();
-  let pid = $page.params.pid;
-  let stock_id: number | null = null;
+  let pid: number | null = null;
+  let sn: string | null = null;
   export let is_open = false;
 
   let customized_by: string = '';
   let customization: string = '';
   let errors: Record<string, string[]> = {};
 
-  export function open(stock_id: number) {
+  export function open(product_id: number, serial_no: string) {
     is_open = true;
-    stock_id = stock_id;
+    pid = product_id;
+    sn = serial_no;
   }
 
   async function submit() {
@@ -37,7 +37,7 @@
       return;
     }
 
-    const result = await client.updateProductCustomization(stock_id!, customized_by, customization);
+    const result = await client.updateProductCustomization(pid!, sn!, customization, customized_by);
     if (result.success) {
       customized_by = '';
       customization = '';

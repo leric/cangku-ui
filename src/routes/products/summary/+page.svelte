@@ -7,7 +7,6 @@
   import Button, { Label as ButtonLabel } from '@smui/button';
   import { APIClient, type ProductStockSummaryDTO } from '$lib/api';
   import { page } from '$app/stores';
-  import { goto } from '$app/navigation';
 
   let client = new APIClient();
   let items: ProductStockSummaryDTO[] = [];

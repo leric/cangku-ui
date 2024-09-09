@@ -332,13 +332,14 @@ export class APIClient {
 
   /**
    * 更新库存产品的定制信息
-   * @param stock_id 库存ID
+   * @param pid 产品ID
+   * @param sn 库存序列号
    * @param customization 定制信息
    * @param customized_by 定制人
    * @returns 
    */
-  async updateProductCustomization(stock_id: number, customization: string, customized_by: string) {
-    return await this.fetchAPI(`/product_stock/${stock_id}/customize`, {
+  async updateProductCustomization(pid: number, sn: string, customization: string, customized_by: string) {
+    return await this.fetchAPI(`/product_repo/${pid}/stock/${sn}/customize`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -366,6 +367,34 @@ export class APIClient {
   async deleteProductSalesOrder(order_no: string): Promise<Result> {
     return await this.fetchAPI(`/product_repo/sales_order/${order_no}`, {
       method: 'DELETE',
+    });
+  }
+
+  async getCurrentUser() {
+    const result = await this.fetchAPI('/user/current');
+    if (result.success) {
+      return result.data;
+    }
+    return null;
+  }
+  
+  async updateUserName(name: string) {
+    return await this.fetchAPI('/user/info', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username: name }),
+    });
+  }
+
+  async updateUserPassword(oldPassword: string, newPassword: string) {
+    return await this.fetchAPI('/user/password', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ current_password: oldPassword, new_password: newPassword }),
     });
   }
 }

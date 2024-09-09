@@ -15,8 +15,8 @@ export const auth = {
       
       if (response.ok) {
         const token = await response.json();
-        tokenStore.set(token);
-        localStorage.setItem('token', token);
+        tokenStore.set(token.access_token);
+        localStorage.setItem('token', token.access_token);
         return true;
       }
     } catch (error) {
