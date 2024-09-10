@@ -76,6 +76,12 @@ export type Result = {
   data: any;
 }
 
+export type UserDTO = {
+  id: number;
+  username: string;
+  email: string;
+  role: string;
+};
 
 export class APIClient {
 
@@ -395,6 +401,81 @@ export class APIClient {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ current_password: oldPassword, new_password: newPassword }),
+    });
+  }
+
+  /**
+   * Get users with pagination and search
+   * @param searchQuery Search query string
+   * @param pageNum Page number
+   * @param pageSize Number of items per page
+   * @returns Array of UserDTO
+   */
+  async getUsers(searchQuery: string, pageNum: number, pageSize: number): Promise<UserDTO[]> {
+    const params = new URLSearchParams({
+      q: searchQuery,
+      p: pageNum.toString(),
+      ps: pageSize.toString()
+    });
+    const result = await this.fetchAPI(`/users?${params.toString()}`);
+    if (result.success) {
+      return result.data;
+    }
+    return [];
+  }
+
+  /**
+   * Create a new user
+   * @param user User data to create
+   * @returns Result of the operation
+   */
+  async createUser(user: Omit<UserDTO, 'id'>): Promise<Result> {
+    return await this.fetchAPI('/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    });
+  }
+
+  /**
+   * Get a single user by ID
+   * @param userId User ID
+   * @returns UserDTO or null if not found
+   */
+  async getUser(userId: number): Promise<UserDTO | null> {
+    const result = await this.fetchAPI(`/users/${userId}`);
+    if (result.success) {
+      return result.data;
+    }
+    return null;
+  }
+
+  /**
+   * Update an existing user
+   * @param userId User ID
+   * @param userData Updated user data
+   * @returns Result of the operation
+   */
+  async updateUser(userId: number, userData: Partial<UserDTO>): Promise<Result> {
+    return await this.fetchAPI(`/users/${userId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    });
+  }
+
+  /**
+   * Delete a user
+   * @param userId User ID
+   * @returns Result of the operation
+   */
+  async deleteUser(userId: string): Promise<Result> {
+    return await this.fetchAPI(`/users/${userId}`, {
+      method: 'DELETE',
     });
   }
 }
