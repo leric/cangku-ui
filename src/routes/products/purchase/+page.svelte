@@ -53,7 +53,7 @@
       </Button>
       <span class="text-gray-500">/</span>
       <Button variant="text" href="/products/purchase">
-        <Label>销售订单列表</Label>
+        <Label>采购订单列表</Label>
       </Button>
       {#if pid && catalogMap[+pid] }
       <span class="text-gray-500">/</span>

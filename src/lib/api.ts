@@ -1,4 +1,5 @@
 import { auth } from './auth';
+import { goto } from '$app/navigation';
 
 export type ProductStockSummaryDTO = {
   product_id: number;
@@ -111,7 +112,9 @@ export class APIClient {
     const resp = await this.fetch(`${this.base}${endpoint}`, options);
     const result = await resp.json();
     if (authenticated && resp.status === 401) {
-      auth.requireAuth(window.location.pathname);
+      // Token is invalid, clear it and redirect to login
+      auth.logout();
+      goto(`/login?redirect=${encodeURIComponent(window.location.pathname)}`);
       return {
         success: false,
         errors: 'Unauthorized',

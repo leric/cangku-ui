@@ -24,12 +24,8 @@
   });
 
   onMount(async () => {
-    try {
-      user = await apiClient.getCurrentUser();
-      newName = user.username;
-    } catch (error) {
-      message = '加载用户信息失败';
-    }
+    user = await apiClient.getCurrentUser();
+    newName = user.username;
   });
 
   async function updateName() {
